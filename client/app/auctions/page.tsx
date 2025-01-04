@@ -3,14 +3,22 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+// Define a type for Auction
+interface Auction {
+  _id: string;
+  title: string;
+  description: string;
+  endTime: string;
+}
+
 export default function AuctionsPage() {
-  const [auctions, setAuctions] = useState<any[]>([]);
+  const [auctions, setAuctions] = useState<Auction[]>([]);
 
   useEffect(() => {
     async function fetchAuctions() {
       try {
         const response = await fetch('http://localhost:5001/api/auctions');
-        const data = await response.json();
+        const data: Auction[] = await response.json(); // Specify Auction type
         setAuctions(data);
       } catch (error) {
         console.error('Error fetching auctions:', error);

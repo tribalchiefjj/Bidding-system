@@ -54,8 +54,12 @@ export default function CreateAuctionPage() {
             setDescription('');
             setStartingPrice('');
             setEndTime('');
-        } catch (err: any) {
-            setError(err.message || 'An error occurred');
+        } catch (err: unknown) {  // Use 'unknown' instead of 'any'
+            if (err instanceof Error) {
+                setError(err.message || 'An error occurred');
+            } else {
+                setError('An unexpected error occurred');
+            }
         }
     };
 

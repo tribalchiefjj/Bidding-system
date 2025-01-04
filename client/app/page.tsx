@@ -1,19 +1,8 @@
-// export default function HomePage() {
-//   return (
-//     <div>
-//       <h2>Welcome to the Online Auction System</h2>
-//       <p>Explore ongoing auctions or create your own!</p>
-//     </div>
-//   );
-// }
-
 'use client';
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Typography, Box, Button, Grid, Card, CardContent } from '@mui/material';
-
-
 
 export default function Home() {
   const router = useRouter();
@@ -22,6 +11,17 @@ export default function Home() {
     const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
+    } else {
+      // Fetch auctions only if the user is logged in (optional)
+      async function fetchAuctions() {
+        try {
+          const response = await fetch('http://localhost:5001/api/auctions');
+          await response.json(); // Data is no longer stored in a variable
+        } catch (error) {
+          console.error('Error fetching auctions:', error);
+        }
+      }
+      fetchAuctions();
     }
   }, [router]);
 

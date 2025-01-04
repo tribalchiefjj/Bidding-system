@@ -25,8 +25,12 @@ export default function LoginPage() {
       const data = await response.json();
       localStorage.setItem('token', data.token); // Store token
       router.push('/'); // Redirect to homepage
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {  // Use 'unknown' instead of 'any'
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 
@@ -70,7 +74,7 @@ export default function LoginPage() {
           </button>
         </form>
         <p className="text-sm text-center mt-4">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <a href="/register" className="text-blue-600 hover:underline">
             Register
           </a>

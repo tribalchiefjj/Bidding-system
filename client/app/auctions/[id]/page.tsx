@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,12 +15,17 @@ interface Auction {
   endTime: string;
 }
 
+// Define Error type
+interface ErrorResponse {
+  message: string;
+}
+
 export default function AuctionDetailsPage() {
   const { id } = useParams();
   const [auction, setAuction] = useState<Auction | null>(null);
-  const [bidAmount, setBidAmount] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [bidAmount, setBidAmount] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
   const socket = io("http://localhost:5001"); // Replace with your backend URL if different
 
   useEffect(() => {
@@ -72,7 +77,7 @@ export default function AuctionDetailsPage() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData: ErrorResponse = await response.json();
         throw new Error(errorData.message || "Failed to place bid.");
       }
 
@@ -81,8 +86,12 @@ export default function AuctionDetailsPage() {
       setBidAmount("");
       setError("");
       setSuccessMessage("Bid placed successfully!");
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     }
   };
 

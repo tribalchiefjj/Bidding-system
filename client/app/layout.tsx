@@ -96,6 +96,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                   { href: '/auctions', label: 'Auctions' },
                   { href: '/create-auction', label: 'Create Auction' },
                   { href: '/profile', label: 'Profile' },
+
                 ].map((link) => (
                   <Link key={link.href} href={link.href} passHref>
                     <MuiLink
